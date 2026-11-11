@@ -1,0 +1,18 @@
+#!/bin/sh
+
+echo ""
+echo "========================================"
+echo " Dovewing - Running tests before commit"
+echo "========================================"
+
+cmd.exe /c mvnw.cmd --batch-mode test
+
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "Tests failed. Commit aborted."
+    exit 1
+fi
+
+echo ""
+echo "All tests passed. Proceeding with commit."
+exit 0
