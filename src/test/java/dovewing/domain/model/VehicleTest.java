@@ -1,4 +1,4 @@
-package dovewing.domain;
+package dovewing.domain.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -7,6 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+
+import dovewing.domain.policy.EconomyPolicy;
+import dovewing.domain.policy.PremiumPolicy;
+import dovewing.domain.policy.RentalPolicy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;

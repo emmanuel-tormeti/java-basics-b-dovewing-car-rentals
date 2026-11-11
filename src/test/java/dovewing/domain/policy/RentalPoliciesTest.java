@@ -1,9 +1,12 @@
-package dovewing.domain;
+package dovewing.domain.policy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
+
+import dovewing.domain.model.RentalQuote;
+import dovewing.domain.model.RenterType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

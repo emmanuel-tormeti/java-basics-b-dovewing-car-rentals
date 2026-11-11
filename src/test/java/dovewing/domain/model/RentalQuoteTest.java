@@ -1,9 +1,10 @@
-package dovewing.domain;
+package dovewing.domain.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
+
 import org.junit.jupiter.api.Test;
 
 class RentalQuoteTest {

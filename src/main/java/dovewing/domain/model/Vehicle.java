@@ -1,4 +1,7 @@
-package dovewing.domain;
+package dovewing.domain.model;
+
+import dovewing.domain.validation.Checks;
+import dovewing.domain.policy.RentalPolicy;
 
 public final class Vehicle {
 

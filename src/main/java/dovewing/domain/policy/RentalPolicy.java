@@ -1,4 +1,7 @@
-package dovewing.domain;
+package dovewing.domain.policy;
+
+import dovewing.domain.model.RentalQuote;
+import dovewing.domain.model.RenterType;
 
 public interface RentalPolicy {
     RentalQuote calculateQuote(int days, RenterType type);

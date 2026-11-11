@@ -1,4 +1,4 @@
-package dovewing.domain;
+package dovewing.domain.model;
 
 import java.math.BigDecimal;
 

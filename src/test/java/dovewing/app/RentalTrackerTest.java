@@ -3,9 +3,9 @@ package dovewing.app;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import dovewing.domain.Depot;
-import dovewing.domain.EconomyPolicy;
-import dovewing.domain.Vehicle;
+import dovewing.domain.model.Depot;
+import dovewing.domain.policy.EconomyPolicy;
+import dovewing.domain.model.Vehicle;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;

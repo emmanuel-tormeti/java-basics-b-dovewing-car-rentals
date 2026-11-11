@@ -1,4 +1,7 @@
-package dovewing.domain;
+package dovewing.domain.policy;
+
+import dovewing.domain.model.RentalQuote;
+import dovewing.domain.model.RenterType;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

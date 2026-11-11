@@ -1,4 +1,6 @@
-package dovewing.domain;
+package dovewing.domain.model;
+
+import dovewing.domain.validation.Checks;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

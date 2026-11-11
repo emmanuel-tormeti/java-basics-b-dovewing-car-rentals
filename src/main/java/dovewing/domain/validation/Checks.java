@@ -1,11 +1,11 @@
-package dovewing.domain;
+package dovewing.domain.validation;
 
-final class Checks {
+public final class Checks {
 
     private Checks() {
     }
 
-    static String requireText(String value, String name) {
+    public static String requireText(String value, String name) {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException(name + " must not be blank");
         }

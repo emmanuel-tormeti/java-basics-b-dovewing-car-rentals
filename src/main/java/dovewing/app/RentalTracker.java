@@ -1,12 +1,12 @@
 package dovewing.app;
 
-import dovewing.domain.Depot;
-import dovewing.domain.EconomyPolicy;
-import dovewing.domain.PremiumPolicy;
-import dovewing.domain.Rental;
-import dovewing.domain.Renter;
-import dovewing.domain.RenterType;
-import dovewing.domain.Vehicle;
+import dovewing.domain.model.Depot;
+import dovewing.domain.policy.EconomyPolicy;
+import dovewing.domain.policy.PremiumPolicy;
+import dovewing.domain.model.Rental;
+import dovewing.domain.model.Renter;
+import dovewing.domain.model.RenterType;
+import dovewing.domain.model.Vehicle;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.Objects;
