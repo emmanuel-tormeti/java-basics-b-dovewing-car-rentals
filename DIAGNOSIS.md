@@ -187,14 +187,14 @@ The original program was run before any source-code changes. Its output is prese
 ## 3. Proposed Design Sketch
 ![Design sketch](dovewing-class-design.png)
 
-Editable source: `design-sketch.drawio`
+Editable source: `dovewing-class-design.drawio`
 
 The design sketch shows:
 * Depot owning the vehicle, renter, and historical rental collections.
 * Depot owning the private `activeRentals` mapping.
 * Rental referencing its actual `Vehicle` and `Renter`.
 * Vehicle using a `RentalPolicy`.
-* Economy, premium, and commercial-van policy implementations, each holding its own daily rate and deposit.
+* A `RentalPolicy` interface. The economy and premium policies share a package-private `DailyRatePolicy` base so the daily-rate calculation exists once. The commercial-van policy implements the interface directly.
 * A `RentalQuote` value record.
 * The relevant enums for renter type and rental status.
 * A `RentalTracker` application layer that prints rental messages and reports and catches `IllegalStateException`, keeping console output out of the domain classes.
@@ -202,7 +202,7 @@ The design sketch shows:
 ---
 
 ## 4. Design Decisions: Inheritance vs. Composition
-The rebuild will favour composition for vehicle-specific pricing and deposit rules.
+The rebuild will favour composition for vehicle-specific pricing and deposit rules, and will use inheritance in one narrow place only, to share a single implementation.
 
 Economy, premium, and commercial-van vehicles have different rental policies. These differences can be represented by separate implementations of a common `RentalPolicy` interface, with each vehicle using the appropriate policy.
 
@@ -213,6 +213,10 @@ An alternative would be an inheritance hierarchy with subclasses such as `Econom
 However, vehicle type and renter type are separate dimensions of business behaviour. Combining them through inheritance could lead to many subclasses as new vehicle and renter categories are introduced.
 
 Composition keeps these rules more independent. The trade-off is that policy objects and their relationships must be explicitly managed.
+
+Inheritance is used in one narrow place. Economy and premium are both flat daily-rate policies: the cost is the daily rate multiplied by the number of days, and the deposit is waived for members. Writing that calculation in each class would repeat the duplication described in finding 4, so both extend a package-private `DailyRatePolicy` that holds it once. Each subclass supplies only its own rate, deposit, and category label. This is a genuine is-a relationship, because each is a flat daily-rate policy and can be used wherever the base is expected without changing the rule.
+
+The base class is an implementation detail, not part of the public design. `Vehicle`, `Depot`, and callers depend only on the `RentalPolicy` interface, which remains the extension point. A policy with different pricing rules, such as the commercial van, implements the interface directly. Forcing it under a daily-rate base would break substitutability and tie its pricing to a rule it does not follow. The trade-off is that economy and premium are coupled to the shared base. That coupling stays inside one package, where it is easy to see and change.
 
 The depot owns the active rental relationship because it coordinates both vehicles and rental records. This avoids a bidirectional vehicle-to-rental relationship and gives one class responsibility for enforcing the one-active-rental-per-vehicle rule.
 
