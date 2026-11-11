@@ -26,7 +26,7 @@ public final class Vehicle {
         return model;
     }
 
-    /** Display text supplied by the policy. Nothing branches on it. */
+    /** Returns the category supplied by this vehicle's rental policy. */
     public String getCategory() {
         return rentalPolicy.category();
     }

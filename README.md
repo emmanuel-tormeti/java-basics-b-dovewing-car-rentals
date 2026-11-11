@@ -1,29 +1,31 @@
 # Dovewing Car Rentals
 
-A Java-based car rental management application built with a focus on object-oriented design, encapsulation, business-rule enforcement, and maintainability.
+[![Dovewing CI](https://github.com/emmanuel-tormeti/java-basics-b-dovewing-car-rentals/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/emmanuel-tormeti/java-basics-b-dovewing-car-rentals/actions/workflows/ci.yml)
+
+A Java-based car rental management application focused on object-oriented design, encapsulation, business rule enforcement, and maintainability.
 
 ## Overview
 
-Dovewing Car Rentals manages a vehicle fleet, renters, and vehicle rental transactions.
+Dovewing Car Rentals is an application for managing a vehicle fleet, renters, and rental transactions.
 
-The application supports different vehicle rental policies, renter categories, rental pricing, and deposit rules. It is designed to preserve valid business behaviour while preventing inconsistent rental states.
+It supports different vehicle rental policies, renter categories, pricing rules, and deposit calculations. The system is designed to preserve expected business behaviour while preventing inconsistent rental states.
 
-A central business rule governs the system: **a vehicle cannot have more than one active rental at a time.**
+A central business rule governs the application: **a vehicle cannot have more than one active rental at a time.**
 
-The project was rebuilt to address design and data-integrity weaknesses in the original implementation while making the domain model easier to maintain and extend.
+The project was rebuilt to address design and data integrity weaknesses in the original implementation while improving the maintainability and extensibility of the domain model.
 
 ## Features
 
-- **Fleet management:** Maintain vehicles and their availability.
+- **Fleet management:** Manage vehicles and track their availability.
 - **Rental management:** Rent and return vehicles while maintaining rental history.
-- **Multiple vehicle policies:** Support economy and premium rental policies, with an extensible design for additional vehicle categories.
+- **Multiple vehicle policies:** Support economy and premium rental policies with an extensible design for additional vehicle categories.
 - **Renter categories:** Support casual and member renters.
 - **Deposit rules:** Apply vehicle-specific deposits and waive deposits for members.
 - **Rental validation:** Reject invalid rental durations, unavailable vehicles, and invalid return operations.
 - **Rental history:** Retain completed rentals and their statuses.
 - **Financial accuracy:** Use `BigDecimal` for monetary calculations.
 - **State protection:** Encapsulate domain state and prevent uncontrolled external modification.
-- **Business-rule enforcement:** Ensure each vehicle has at most one active rental.
+- **Business rule enforcement:** Ensure that each vehicle has at most one active rental.
 
 ## Technology Stack
 
@@ -62,19 +64,19 @@ dovewing/
 
 ### Key Design Decisions
 
-**Encapsulation and state ownership**
+**Encapsulation and State Ownership**
 
 The `Depot` owns the active vehicle-to-rental relationship through a private `Map<Vehicle, Rental>`. Vehicle availability is derived from this mapping rather than maintained as a separate mutable status.
 
-**Composition and policy-based design**
+**Composition and Policy-Based Design**
 
-A `RentalPolicy` interface separates vehicle-specific pricing and deposit rules from rental coordination. Different policy implementations can be introduced without adding vehicle-category conditionals to the depot.
+A `RentalPolicy` interface separates vehicle-specific pricing and deposit rules from rental coordination. Different policy implementations can be introduced without adding vehicle category conditionals to the depot.
 
-**Domain integrity**
+**Domain Integrity**
 
 Rental operations validate their requirements before modifying domain state. A vehicle cannot be rented again until its current rental has been returned.
 
-**Separation of responsibilities**
+**Separation of Responsibilities**
 
 Domain operations are separated from console presentation, making the business logic easier to test independently.
 
@@ -91,8 +93,8 @@ You do not need to install Maven separately.
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/emmanuel-tormeti/java-basics-b-dovewing-car-rentals
-cd dovewing-car-rentals
+git clone https://github.com/emmanuel-tormeti/java-basics-b-dovewing-car-rentals.git
+cd java-basics-b-dovewing-car-rentals
 ```
 
 ### Build the Project
@@ -111,7 +113,7 @@ On Linux or macOS:
 
 ### Run the Application
 
-After building, run the application using:
+After building, run the application using the following commands.
 
 **Windows PowerShell:**
 
@@ -129,7 +131,17 @@ java -cp target/dovewing-car-rentals.jar dovewing.app.RentalTracker
 
 The project uses JUnit Jupiter for automated unit and application-level testing.
 
-The test suite covers:
+The test suite currently contains **72 automated tests** across seven test classes:
+
+- `RentalTrackerTest`
+- `DepotTest`
+- `RentalQuoteTest`
+- `RentalTest`
+- `RenterTest`
+- `VehicleTest`
+- `RentalPoliciesTest`
+
+The tests cover:
 
 - Rental and return operations.
 - Vehicle availability and active rental constraints.
@@ -140,7 +152,7 @@ The test suite covers:
 - Domain state protection.
 - Application behaviour.
 
-The current test suite contains **72 automated tests**, with the latest successful local run reporting zero failures and errors.
+The latest successful local test run reported zero failures and errors.
 
 Run the tests using:
 
@@ -156,71 +168,31 @@ Run the tests using:
 ./mvnw test
 ```
 
-For a complete Maven verification:
+For a complete Maven verification, including the build lifecycle checks, run:
 
 ```bash
 ./mvnw --batch-mode verify
 ```
 
-On Windows, use `.\mvnw.cmd --batch-mode verify`.
+On Windows PowerShell:
 
-## Development Workflow and Automation
+```powershell
+.\mvnw.cmd --batch-mode verify
+```
 
-The project includes local and remote quality checks to help prevent defective changes from being committed or merged.
+## Development Workflow and Automated Quality Assurance
+
+Beyond rebuilding the application's domain model, an additional engineering improvement was introduced to strengthen development reliability and automate quality checks.
+
+The original application contained business rule and data integrity weaknesses, particularly around vehicle availability and active rental records. Automated testing was introduced to verify the rebuilt domain model and protect its expected behaviour against regressions.
+
+Three mechanisms work together to provide multiple levels of quality assurance.
 
 ### Maven Wrapper
 
-The Maven Wrapper ensures that contributors use the Maven version configured by the project. It downloads the required Maven distribution when necessary.
+The Maven Wrapper ensures that contributors use the Maven version configured by the project without requiring a separate Maven installation.
 
-### Pre-commit Hook
-
-A local Git pre-commit hook automatically executes the Maven test suite before a commit proceeds.
-
-To enable the hook after cloning the repository, run:
-
-```bash
-git config core.hooksPath .githooks
-```
-
-The hook runs the tests and blocks a normal commit if they fail.
-
-### Continuous Integration
-
-GitHub Actions is configured to execute the Maven verification process on:
-
-- Pushes to the `main` branch.
-- Pull requests targeting the `main` branch.
-
-The workflow runs on GitHub-hosted Ubuntu with Java 21 and executes:
-
-```bash
-./mvnw --batch-mode verify
-```
-
-This provides an additional automated check in an environment independent of the developer's local machine.
-
-## Project Documentation
-
-Additional project documentation includes:
-
-- **Code diagnosis:** Analysis of the original implementation, identified risks, proposed improvements, and behaviour-preservation requirements.
-- **Original output:** `ORIGINAL_OUTPUT.txt`, preserving the baseline application output before the rebuild.
-- **Design diagram:** `dovewing-class-design.png`.
-- **Editable design diagram:** `dovewing-class-design.drawio`.
-
-## Additional Engineering Feature: Automated Quality Assurance and CI
-
-Beyond rebuilding the application's domain model, an additional engineering feature was introduced to improve development reliability and automate quality checks. This feature combines automated testing, a local Git pre-commit hook, and GitHub Actions continuous integration.
-
-### Automated Testing
-
-The original application contained business-rule and data-integrity weaknesses, particularly around vehicle availability and active rental records.
-
-An automated test suite was introduced to verify the expected behaviour of the rebuilt domain model and protect its business rules against regressions.
-
-The tests cover rental operations, return operations, pricing policies, validation, state management, and application behaviour.
-
-The project currently contains **72 automated tests** using JUnit Jupiter.
+It automatically downloads the required Maven distribution when necessary.
 
 ### Pre-commit Hook
 
@@ -228,17 +200,34 @@ Running tests manually before every commit relies on the developer remembering t
 
 A local Git pre-commit hook was introduced to automate this check. It executes the Maven test suite before allowing a normal commit to proceed.
 
-This helps prevent commits containing changes that break existing tests and encourages a consistent development workflow.
+To enable the hook after cloning the repository, run:
 
-### Continuous Integration (CI)
+```bash
+git config core.hooksPath .githooks
+```
+
+The hook blocks a normal commit if the tests fail. It can be bypassed using Git's `--no-verify` option, so it serves as a development safeguard rather than a security boundary.
+
+### Continuous Integration
 
 Local testing alone does not guarantee that the project will build and pass tests in a different environment.
 
-GitHub Actions was introduced to run the Maven verification process on a clean GitHub-hosted Ubuntu environment whenever changes are pushed to `main` or a pull request targets that branch.
+GitHub Actions was introduced to run the Maven verification process in a clean GitHub-hosted Ubuntu environment.
 
-The CI workflow provides an independent check that the project compiles, passes its automated tests, and completes Maven verification outside the developer's local Windows environment.
+The workflow is triggered by:
 
-### How They Work Together
+- Pushes to the `main` branch.
+- Pull requests targeting the `main` branch.
+
+It uses Java 21 and executes:
+
+```bash
+./mvnw --batch-mode verify
+```
+
+This provides an independent check that the project compiles, passes its automated tests, and completes Maven verification outside the developer's local Windows environment.
+
+### How the Quality Checks Work Together
 
 | Mechanism | When it runs | Purpose |
 |---|---|---|
@@ -246,9 +235,19 @@ The CI workflow provides an independent check that the project compiles, passes 
 | Pre-commit hook | Before a local commit | Catch regressions before committing |
 | GitHub Actions CI | After a push or pull request | Validate changes in a separate environment |
 
-Together, these checks establish multiple layers of feedback: automated tests verify correctness, the pre-commit hook encourages local development discipline, and CI independently validates changes in the remote development workflow.
+Together, these mechanisms establish multiple layers of feedback. Automated tests verify correctness, the pre-commit hook encourages local development discipline, and continuous integration independently validates changes in the remote development workflow.
+
+## Project Documentation
+
+Additional project documentation includes:
+
+- **Code diagnosis:** [`DIAGNOSIS.md`](DIAGNOSIS.md), containing the analysis of the original implementation, identified risks, proposed improvements, and behaviour preservation requirements.
+- **Original output:** [`ORIGINAL_OUTPUT.txt`](ORIGINAL_OUTPUT.txt), preserving the baseline application output before the rebuild.
+- **Design diagram:** [`dovewing-class-design.png`](dovewing-class-design.png), providing a visual representation of the class design.
+- **Editable design diagram:** [`dovewing-class-design.drawio`](dovewing-class-design.drawio), providing the editable source of the class diagram.
 
 ---
 
-**Dovewing Car Rentals**  
+**Dovewing Car Rentals**
+
 Built with Java 21 and Apache Maven.
