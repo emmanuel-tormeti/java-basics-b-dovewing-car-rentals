@@ -5,7 +5,7 @@ echo "========================================"
 echo " Dovewing - Running tests before commit"
 echo "========================================"
 
-cmd.exe /c "call mvnw.cmd --batch-mode test"
+cmd.exe //c "call mvnw.cmd --batch-mode test"
 
 if [ $? -ne 0 ]; then
     echo ""
